@@ -1,0 +1,362 @@
+/* Modern Subtle Pastel Astrology Design System */
+:root {
+  --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Outfit', system-ui, sans-serif;
+  --font-vedic: 'Cinzel', serif;
+
+  /* Subtle Pastel Color Tokens */
+  --bg-main: #FDFBF7;
+  --bg-gradient: linear-gradient(135deg, #FAF5FF 0%, #F0F7FF 40%, #FFF5F7 70%, #FDFBF7 100%);
+  --pastel-card-bg: rgba(255, 255, 255, 0.88);
+  --pastel-card-border: rgba(221, 214, 254, 0.6);
+  --pastel-card-hover: rgba(255, 255, 255, 0.98);
+
+  --pastel-lavender: #EDE9FE;
+  --pastel-lavender-border: #C4B5FD;
+  --pastel-rose: #FFE4E6;
+  --pastel-rose-border: #FDA4AF;
+  --pastel-sky: #E0F2FE;
+  --pastel-sky-border: #7DD3FC;
+  --pastel-mint: #DCFCE7;
+  --pastel-mint-border: #86EFAC;
+  --pastel-amber: #FEF3C7;
+  --pastel-amber-border: #FCD34D;
+  --pastel-indigo: #E0E7FF;
+  --pastel-indigo-border: #A5B4FC;
+
+  /* High-Contrast Readable Text Tokens */
+  --text-primary: #1E1B4B;     /* Deep royal indigo - maximum contrast */
+  --text-secondary: #334155;   /* Slate - crisp and clear */
+  --text-muted: #64748B;       /* Secondary neutral */
+  --text-accent: #6D28D9;      /* Royal violet accent */
+  --text-gold: #B45309;        /* Warm amber/gold accent */
+
+  /* Shadows & Glassmorphism */
+  --shadow-sm: 0 2px 8px rgba(109, 40, 217, 0.04);
+  --shadow-md: 0 8px 24px rgba(109, 40, 217, 0.07);
+  --shadow-lg: 0 16px 36px rgba(109, 40, 217, 0.12);
+  --shadow-glow: 0 0 25px rgba(167, 139, 250, 0.35);
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-primary);
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Typography Utility */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--text-primary);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.vedic-font {
+  font-family: var(--font-vedic);
+}
+
+/* Glassmorphic Pastel Card */
+.pastel-card {
+  background: var(--pastel-card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--pastel-card-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pastel-card:hover {
+  background: var(--pastel-card-hover);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--pastel-lavender-border);
+}
+
+/* Highlight Badge */
+.pastel-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.badge-lavender {
+  background: var(--pastel-lavender);
+  border: 1px solid var(--pastel-lavender-border);
+  color: #5B21B6;
+}
+
+.badge-rose {
+  background: var(--pastel-rose);
+  border: 1px solid var(--pastel-rose-border);
+  color: #BE123C;
+}
+
+.badge-sky {
+  background: var(--pastel-sky);
+  border: 1px solid var(--pastel-sky-border);
+  color: #0369A1;
+}
+
+.badge-mint {
+  background: var(--pastel-mint);
+  border: 1px solid var(--pastel-mint-border);
+  color: #047857;
+}
+
+.badge-amber {
+  background: var(--pastel-amber);
+  border: 1px solid var(--pastel-amber-border);
+  color: #B45309;
+}
+
+/* Floating Action Button (+) */
+.floating-plus-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+  color: #FFFFFF;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: pulse-glow 3s infinite;
+}
+
+.floating-plus-btn:hover {
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 14px 32px rgba(236, 72, 153, 0.55);
+}
+
+.floating-tooltip {
+  position: fixed;
+  bottom: 34px;
+  right: 98px;
+  background: #1E1B4B;
+  color: #FFFFFF;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  pointer-events: none;
+  white-space: nowrap;
+  animation: fadeInRight 0.3s ease;
+  z-index: 999;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 14px rgba(139, 92, 246, 0);
+  }
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Buttons */
+.btn-primary {
+  background: linear-gradient(135deg, #7C3AED 0%, #6366F1 100%);
+  color: #FFFFFF;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.35);
+}
+
+.btn-secondary {
+  background: #FFFFFF;
+  color: var(--text-primary);
+  font-weight: 600;
+  padding: 9px 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--pastel-lavender-border);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--pastel-lavender);
+  border-color: #A78BFA;
+}
+
+/* Form Inputs */
+.form-input {
+  width: 100%;
+  padding: 11px 16px;
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+  transition: all 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #8B5CF6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+}
+
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-content {
+  background: #FFFFFF;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--pastel-lavender-border);
+  max-width: 720px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Lo Shu Grid */
+.loshu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  max-width: 260px;
+  margin: 0 auto;
+}
+
+.loshu-cell {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #FAF5FF;
+  border: 2px solid var(--pastel-lavender-border);
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #4C1D95;
+  transition: transform 0.2s ease;
+}
+
+.loshu-cell.empty {
+  background: #F8FAFC;
+  border-color: #E2E8F0;
+  color: #94A3B8;
+  font-size: 0.9rem;
+}
+
+/* Vedic Kundali SVG Styles */
+.kundali-svg {
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Responsive Grid Utilities */
+.grid-responsive {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .floating-plus-btn {
+    bottom: 20px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+  }
+  .floating-tooltip {
+    display: none;
+  }
+}

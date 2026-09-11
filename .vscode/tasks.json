@@ -1,0 +1,36 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start JyotishVeda Platform (Backend + Frontend)",
+      "type": "npm",
+      "script": "dev",
+      "problemMatcher": [],
+      "isBackground": true,
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Install All Dependencies",
+      "type": "npm",
+      "script": "install-all",
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Backend",
+      "type": "npm",
+      "script": "dev:backend",
+      "problemMatcher": [],
+      "isBackground": true
+    },
+    {
+      "label": "Start Frontend",
+      "type": "npm",
+      "script": "dev:frontend",
+      "problemMatcher": [],
+      "isBackground": true
+    }
+  ]
+}
