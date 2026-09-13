@@ -50,12 +50,12 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
     setFormData({
       name: "",
       dob: "",
-      tob: "12:00",
+      tob: "",
       mobile: "",
       houseNo: "",
       age: "",
       gender: "male",
-      place: "New Delhi"
+      place: ""
     });
     setMobileError('');
   };
@@ -66,7 +66,7 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
   };
 
   return (
-    <div className="pastel-card" style={{ padding: '24px', marginBottom: '24px' }}>
+    <div className="pastel-card form-card-padding" style={{ marginBottom: '24px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '18px', flexWrap: 'wrap', gap: '10px' }}>
         <div>
           <h2 style={{ fontSize: '1.25rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -99,7 +99,7 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+        <div className="form-input-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
           {/* 1. Full Name */}
           <div>
             <label className="form-label">
@@ -134,7 +134,7 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
             <label className="form-label">
               <Clock size={14} style={{ display: 'inline', marginRight: '4px' }} /> {t.tobLabel} *
             </label>
-            <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <div className="tob-row">
               {/* Hours (1-12) */}
               <select
                 className="form-input"
@@ -179,7 +179,7 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
               </select>
 
               {/* AM / PM Toggle Buttons */}
-              <div style={{ display: 'flex', borderRadius: '10px', overflow: 'hidden', border: '1.5px solid #C4B5FD', background: '#F5F3FF' }}>
+              <div className="tob-ampm" style={{ borderRadius: '10px', overflow: 'hidden', border: '1.5px solid #C4B5FD', background: '#F5F3FF' }}>
                 <button
                   type="button"
                   onClick={() => {
@@ -227,15 +227,17 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
               </div>
             </div>
             {/* Live Visual Time Confirmation */}
-            <div style={{ marginTop: '4px', fontSize: '0.74rem', color: '#6D28D9', fontWeight: 600 }}>
-              ⏰ Selected: {(() => {
-                const [h, m] = (formData.tob || '10:00').split(':');
-                const hNum = parseInt(h, 10);
-                const isPM = hNum >= 12;
-                const h12 = hNum % 12 === 0 ? 12 : hNum % 12;
-                return `${String(h12).padStart(2, '0')}:${m || '00'} ${isPM ? 'PM (रात्रिकाल/अपराह्न)' : 'AM (प्रातःकाल/पूर्वाह्न)'} [24h: ${formData.tob || '10:00'}]`;
-              })()}
-            </div>
+            {formData.tob && (
+              <div style={{ marginTop: '4px', fontSize: '0.74rem', color: '#6D28D9', fontWeight: 600 }}>
+                ⏰ Selected: {(() => {
+                  const [h, m] = (formData.tob || '10:00').split(':');
+                  const hNum = parseInt(h, 10);
+                  const isPM = hNum >= 12;
+                  const h12 = hNum % 12 === 0 ? 12 : hNum % 12;
+                  return `${String(h12).padStart(2, '0')}:${m || '00'} ${isPM ? 'PM (रात्रिकाल/अपराह्न)' : 'AM (प्रातःकाल/पूर्वाह्न)'} [24h: ${formData.tob}]`;
+                })()}
+              </div>
+            )}
           </div>
 
           {/* 4. Mobile Number (12 Digits with Country Code) */}

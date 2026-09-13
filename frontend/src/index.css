@@ -342,6 +342,13 @@ h1, h2, h3, h4, h5, h6 {
   display: block;
 }
 
+/* App container — responsive padding */
+.app-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px 16px 80px 16px;
+}
+
 /* Responsive Grid Utilities */
 .grid-responsive {
   display: grid;
@@ -349,14 +356,173 @@ h1, h2, h3, h4, h5, h6 {
   gap: 20px;
 }
 
+/* Form card — responsive padding */
+.form-card-padding {
+  padding: 24px;
+}
+
+/* Time of Birth row — wrap on small screens */
+.tob-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+/* Modal responsive padding */
+.modal-inner-padding {
+  padding: 24px;
+}
+
+/* Quick chip row — allow wrapping */
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* ── Tablet (≤768px) ── */
 @media (max-width: 768px) {
+  .app-container {
+    padding: 14px 12px 90px 12px;
+  }
+
+  .form-card-padding {
+    padding: 18px 14px;
+  }
+
+  .modal-inner-padding {
+    padding: 18px 14px;
+  }
+
   .floating-plus-btn {
-    bottom: 20px;
-    right: 20px;
+    bottom: 18px;
+    right: 18px;
     width: 56px;
     height: 56px;
   }
+
   .floating-tooltip {
     display: none;
+  }
+
+  .modal-content {
+    max-height: 92vh;
+    border-radius: var(--radius-md);
+  }
+
+  .grid-responsive {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+/* ── Phone (≤480px) ── */
+@media (max-width: 480px) {
+  .app-container {
+    padding: 10px 8px 88px 8px;
+  }
+
+  .form-card-padding {
+    padding: 14px 10px;
+  }
+
+  .modal-inner-padding {
+    padding: 14px 10px;
+  }
+
+  /* Collapse input grid to single column */
+  .form-input-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+
+  /* TOB row wraps: selects go to a 2-col row, AM/PM stays below */
+  .tob-row {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tob-row > select {
+    flex: 1 1 40%;
+    min-width: 70px;
+  }
+
+  .tob-ampm {
+    flex: 1 1 100%;
+    display: flex;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1.5px solid #C4B5FD;
+    background: #F5F3FF;
+  }
+
+  .tob-ampm button {
+    flex: 1;
+  }
+
+  /* Floating button smaller on phone */
+  .floating-plus-btn {
+    bottom: 14px;
+    right: 14px;
+    width: 52px;
+    height: 52px;
+  }
+
+  /* Modal fills screen on phone */
+  .modal-overlay {
+    padding: 8px;
+    align-items: flex-end;
+  }
+
+  .modal-content {
+    max-height: 94vh;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+
+  /* Chips wrap and shrink */
+  .chip-row button {
+    font-size: 0.72rem !important;
+    padding: 4px 8px !important;
+  }
+
+  /* Card heading scales down */
+  h2 {
+    font-size: 1.05rem !important;
+  }
+
+  h3 {
+    font-size: 0.95rem !important;
+  }
+
+  /* Form label smaller */
+  .form-label {
+    font-size: 0.78rem;
+  }
+
+  /* Form input padding tighter */
+  .form-input {
+    padding: 9px 12px;
+    font-size: 0.88rem;
+  }
+
+  /* Buttons in header area */
+  .btn-secondary {
+    padding: 6px 10px;
+    font-size: 0.76rem;
+  }
+
+  .btn-primary {
+    padding: 9px 16px;
+    font-size: 0.88rem;
+  }
+
+  /* Response block padding */
+  .response-block {
+    padding: 14px 10px !important;
+  }
+
+  .grid-responsive {
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 }

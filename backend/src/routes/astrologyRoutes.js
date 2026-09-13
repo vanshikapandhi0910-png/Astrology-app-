@@ -80,7 +80,7 @@ router.post('/calculate-all', (req, res) => {
         8: { id: "mundane-astrology", titleEn: "Mundane Global Astrology", titleHi: "मेदनीय (वैश्विक) ज्योतिष", data: mundane },
         9: { id: "medical-astrology", titleEn: "Medical Astrology & Astro-Ayurveda", titleHi: "आयुर्वेद-ज्योतिष व त्रिदोष", data: medicalAstro },
         10: { id: "vastu-predictions", titleEn: "Vastu Shastra & Directional Energy", titleHi: "वास्तु शास्त्र व दिशा ऊर्जा", data: vastu },
-        11: { id: "birth-chart", titleEn: "Accurate 12 Houses Vedic Birth Chart", titleHi: "सटीक 12 भाव जन्म कुंडली", data: vedicChart },
+        11: { id: "birth-chart", titleEn: "9 Grahas (Planets) in Vedic Kundli", titleHi: "वैदिक कुंडली में 9 ग्रह", data: vedicChart },
         13: { id: "name-decoder", titleEn: "Name Decoder & Success Optimizer", titleHi: "नाम विश्लेषण एवं सफलता सुधार", data: nameDecoder }
       }
     });
@@ -93,14 +93,14 @@ router.post('/calculate-all', (req, res) => {
 /**
  * 2. Hinglish / Multilingual AI Ask Question Endpoint
  */
-router.post('/ask-question', (req, res) => {
+router.post('/ask-question', async (req, res) => {
   try {
     const { query, profile = {}, chartData = {} } = req.body;
     if (!query) {
       return res.status(400).json({ error: "Question query is required." });
     }
 
-    const response = processAstrologyQuery(query, profile, chartData);
+    const response = await processAstrologyQuery(query, profile, chartData);
     res.json({ success: true, response });
   } catch (err) {
     console.error("Ask Question Error:", err);

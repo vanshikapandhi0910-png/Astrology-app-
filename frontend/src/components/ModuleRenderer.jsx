@@ -1,5 +1,5 @@
 import React from 'react';
-import { HelpCircle, Sparkles, AlertCircle, Award, CheckCircle2, ShieldCheck, Sun, Moon, Compass, Heart } from 'lucide-react';
+import { HelpCircle, Sparkles, AlertCircle, Award, CheckCircle2, ShieldCheck, Sun, Moon, Compass, Heart, Star } from 'lucide-react';
 import KundaliChart from './KundaliChart';
 import VastuCompass from './VastuCompass';
 import CompatibilityTab from './CompatibilityTab';
@@ -167,6 +167,65 @@ export default function ModuleRenderer({ activeTab, reportData, primaryUser, lan
               </p>
             </div>
           </div>
+
+          {/* 💎 Gem Recommendation from Mulank */}
+          {d.mulank && (() => {
+            const MULANK_GEM = {
+              1: { gem: 'Ruby (माणिक्य)',           planet: 'Sun',     metal: 'Gold',   day: 'Sunday',    color: '#DC2626' },
+              2: { gem: 'Pearl (मोती)',               planet: 'Moon',    metal: 'Silver', day: 'Monday',    color: '#0369A1' },
+              3: { gem: 'Yellow Sapphire (पुखराज)', planet: 'Jupiter', metal: 'Gold',   day: 'Thursday',  color: '#B45309' },
+              4: { gem: 'Hessonite (गोमेद)',         planet: 'Rahu',    metal: 'Silver', day: 'Saturday',  color: '#475569' },
+              5: { gem: 'Emerald (पन्ना)',            planet: 'Mercury', metal: 'Gold',   day: 'Wednesday', color: '#059669' },
+              6: { gem: 'Diamond / Opal (हीरा)',     planet: 'Venus',   metal: 'Silver', day: 'Friday',    color: '#7C3AED' },
+              7: { gem: "Cat's Eye (लहसुनिया)",      planet: 'Ketu',    metal: 'Silver', day: 'Thursday',  color: '#6D28D9' },
+              8: { gem: 'Blue Sapphire (नीलम)',      planet: 'Saturn',  metal: 'Iron',   day: 'Saturday',  color: '#1D4ED8' },
+              9: { gem: 'Red Coral (मूंगा)',          planet: 'Mars',    metal: 'Copper', day: 'Tuesday',   color: '#B91C1C' }
+            };
+            const KUA_ELEMENT = { 1:'Water',2:'Earth',3:'Wood',4:'Wood',6:'Metal',7:'Metal',8:'Earth',9:'Fire' };
+            const KUA_COLOR   = { 1:'Blue & Black',2:'Brown & Yellow',3:'Green & Teal',4:'Green & Purple',6:'White & Gold',7:'Silver & White',8:'Beige & Yellow',9:'Red & Orange' };
+            const KUA_DIRS    = { 1:['North','South','East','SE'],2:['SW','West','NW','NE'],3:['South','North','SE','East'],4:['North','South','East','SE'],6:['West','NE','SW','NW'],7:['NE','West','SW','NW'],8:['SW','West','NE','NW'],9:['East','SE','North','South'] };
+            const gemInfo = MULANK_GEM[d.mulank];
+            const kua = d.kuaNumber;
+            return (
+              <div style={{ marginTop: '20px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
+                  {/* Gemstone card */}
+                  <div style={{ background: 'linear-gradient(135deg, #FFF7ED 0%, #FAF5FF 100%)', border: '1px solid #FDE68A', borderRadius: '14px', padding: '16px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#92400E', fontWeight: 700, fontSize: '0.9rem', marginBottom: '10px' }}>
+                      💎 Lucky Gemstone (अनुकूल रत्न)
+                    </div>
+                    {gemInfo && (
+                      <>
+                        <div style={{ fontSize: '1.3rem', fontWeight: 800, color: gemInfo.color, marginBottom: '4px' }}>{gemInfo.gem}</div>
+                        <div style={{ fontSize: '0.8rem', color: '#64748B', marginBottom: '8px' }}>Planet: {gemInfo.planet} · Metal: {gemInfo.metal}</div>
+                        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                          <span className="pastel-badge badge-amber" style={{ fontSize: '0.72rem' }}>Wear on {gemInfo.day}</span>
+                          <span className="pastel-badge badge-lavender" style={{ fontSize: '0.72rem' }}>Ring/Little Finger</span>
+                        </div>
+                        <p style={{ fontSize: '0.78rem', color: '#78716C', marginTop: '8px' }}>Set in {gemInfo.metal}, energize with {gemInfo.planet} mantra before wearing.</p>
+                      </>
+                    )}
+                  </div>
+                  {/* Feng Shui Kua card */}
+                  {kua && KUA_ELEMENT[kua] && (
+                    <div style={{ background: 'linear-gradient(135deg, #F0FDF4 0%, #EFF6FF 100%)', border: '1px solid #BBF7D0', borderRadius: '14px', padding: '16px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#065F46', fontWeight: 700, fontSize: '0.9rem', marginBottom: '10px' }}>
+                        ☯️ Feng Shui Kua {kua} ({KUA_ELEMENT[kua]})
+                      </div>
+                      <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#059669', marginBottom: '4px' }}>🎨 {KUA_COLOR[kua]}</div>
+                      <div style={{ fontSize: '0.8rem', color: '#64748B', marginBottom: '8px' }}>Lucky Directions:</div>
+                      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                        {(KUA_DIRS[kua]||[]).map((dir,i) => (
+                          <span key={i} className="pastel-badge badge-mint" style={{ fontSize: '0.72rem' }}>{dir}</span>
+                        ))}
+                      </div>
+                      <p style={{ fontSize: '0.78rem', color: '#065F46', marginTop: '8px' }}>Face {(KUA_DIRS[kua]||[])[0]} while working or sleeping for best results.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })()}
 
           {renderLogicBox(d.logicExplanationEn, d.logicExplanationHi)}
         </div>
@@ -390,15 +449,65 @@ export default function ModuleRenderer({ activeTab, reportData, primaryUser, lan
         </div>
       )}
 
-      {/* 10. Vastu Shastra & Directional Energy */}
+      {/* 10. Vastu Shastra & Directional Energy + Feng Shui */}
       {activeTab === 10 && d && (
         <div>
           <VastuCompass vastuData={d} lang={lang} />
+
+          {/* ☯️ Feng Shui Kua Section */}
+          {d.kuaNumber && (() => {
+            const KUA_DB = {
+              1: { element:'Water (जल)',    group:'East',  dirs:['North','South','East','SE'], color:'Blue & Black', emoji:'💧', advice:'Career zone in North; health zone in East.' },
+              2: { element:'Earth (पृथ्वी)',group:'West',  dirs:['SW','West','NW','NE'],       color:'Brown & Yellow',emoji:'🌍', advice:'Bedroom in SW for stability; study in NE.' },
+              3: { element:'Wood/Thunder',  group:'East',  dirs:['South','North','SE','East'], color:'Green & Teal',  emoji:'⚡', advice:'Career zone in South; avoid SW main door.' },
+              4: { element:'Wind/Wood',     group:'East',  dirs:['North','South','East','SE'], color:'Green & Purple',emoji:'🌿', advice:'Academic area in SE; wealth from North.' },
+              6: { element:'Heaven/Metal',  group:'West',  dirs:['West','NE','SW','NW'],       color:'White & Gold',  emoji:'⚙️', advice:'Leadership energy in NW; wealth room in West.' },
+              7: { element:'Lake/Metal',    group:'West',  dirs:['NE','West','SW','NW'],       color:'White & Silver',emoji:'🏔️', advice:'Social luck in West; study in NE.' },
+              8: { element:'Mountain/Earth',group:'West',  dirs:['SW','West','NE','NW'],       color:'Beige & Yellow',emoji:'🗻', advice:'Prosperity in NE; family harmony in SW.' },
+              9: { element:'Fire (अग्नि)', group:'East',  dirs:['East','SE','North','South'], color:'Red & Orange',  emoji:'🔥', advice:'Fame from South; career in North. Avoid West.' }
+            };
+            const kd = KUA_DB[d.kuaNumber];
+            if (!kd) return null;
+            return (
+              <div style={{ marginTop: '24px', background: 'linear-gradient(135deg, #F0FDF4 0%, #EFF6FF 100%)', border: '1.5px solid #BBF7D0', borderRadius: '16px', padding: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+                  <span style={{ fontSize: '1.8rem' }}>{kd.emoji}</span>
+                  <div>
+                    <h3 style={{ fontSize: '1.05rem', color: '#065F46', fontWeight: 800 }}>☯️ Feng Shui Kua {d.kuaNumber} — {kd.element}</h3>
+                    <p style={{ fontSize: '0.78rem', color: '#047857' }}>{kd.group} Group · Complements your Vastu analysis</p>
+                  </div>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
+                  <div style={{ background: '#FFFFFF', borderRadius: '10px', padding: '14px', border: '1px solid #D1FAE5' }}>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#065F46', marginBottom: '6px' }}>🧭 Lucky Power Directions</div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                      {kd.dirs.map((dir, i) => (
+                        <span key={i} className="pastel-badge badge-mint" style={{ fontSize: '0.72rem' }}>{i===0?'⭐ ':''}{dir}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div style={{ background: '#FFFFFF', borderRadius: '10px', padding: '14px', border: '1px solid #D1FAE5' }}>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#065F46', marginBottom: '6px' }}>🎨 Auspicious Colors</div>
+                    <div style={{ fontSize: '1rem', fontWeight: 800, color: '#059669' }}>{kd.color}</div>
+                    <p style={{ fontSize: '0.75rem', color: '#64748B', marginTop: '4px' }}>Use these colors in your home & office decor.</p>
+                  </div>
+                  <div style={{ background: '#FFFFFF', borderRadius: '10px', padding: '14px', border: '1px solid #D1FAE5' }}>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#065F46', marginBottom: '6px' }}>💡 Feng Shui Advice</div>
+                    <p style={{ fontSize: '0.8rem', color: '#047857', lineHeight: 1.5 }}>{kd.advice}</p>
+                  </div>
+                </div>
+                <p style={{ fontSize: '0.75rem', color: '#047857', marginTop: '12px', padding: '8px 12px', background: '#ECFDF5', borderRadius: '8px' }}>
+                  💡 Kua {d.kuaNumber} is calculated from your year of birth + gender using the Ba-Gua matrix. It complements Vastu Shastra with Chinese Five Element theory for holistic home harmony.
+                </p>
+              </div>
+            );
+          })()}
+
           {renderLogicBox(d.logicExplanationEn, d.logicExplanationHi)}
         </div>
       )}
 
-      {/* 11. Accurate 12-House Birth Chart */}
+      {/* 11. Nine Grahas in the Vedic Kundli */}
       {activeTab === 11 && d && (
         <div>
           <KundaliChart vedicChart={d} lang={lang} />

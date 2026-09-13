@@ -15,7 +15,7 @@ export const MODULE_TABS = [
   { id: 8, key: "mundane-astrology", icon: Globe2, labelEn: "8. Mundane Global", labelHi: "8. मेदनीय (वैश्विक)", badge: "Macro" },
   { id: 9, key: "medical-astrology", icon: Activity, labelEn: "9. Medical & Ayurveda", labelHi: "9. आयुर्वेद व त्रिदोष", badge: "Tri-Dosha" },
   { id: 10, key: "vastu-predictions", icon: Compass, labelEn: "10. Vastu & Directions", labelHi: "10. वास्तु व दिशा ऊर्जा", badge: "8-Zones" },
-  { id: 11, key: "birth-chart", icon: FileText, labelEn: "11. 12-House Birth Chart", labelHi: "11. 12 भाव जन्म कुंडली", badge: "Vedic" },
+  { id: 11, key: "birth-chart", icon: FileText, labelEn: "11. 9 Grahas in Vedic Kundli", labelHi: "11. वैदिक कुंडली के 9 ग्रह", badge: "9 Grahas" },
   { id: 12, key: "compatibility", icon: HeartHandshake, labelEn: "12. 36-Guna Compatibility", labelHi: "12. 36 गुण मिलान", badge: "Ashtakoot" },
   { id: 13, key: "name-decoder", icon: SpellCheck, labelEn: "13. Name Decoder", labelHi: "13. नाम सुधार व यश", badge: "Chaldean" }
 ];

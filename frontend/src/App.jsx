@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Header from './components/Header';
 import UserInputForm from './components/UserInputForm';
 import TabNavigation from './components/TabNavigation';
@@ -19,16 +19,16 @@ export default function App() {
   const [isAskModalOpen, setIsAskModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Default User Profile Inputs (5+ parameters)
+  // Empty initial form — no pre-filled data
   const [formData, setFormData] = useState({
-    name: "Aarav Sharma",
-    dob: "1998-05-15",
-    tob: "10:30",
-    mobile: "+919876543210",
-    houseNo: "108",
-    age: 28,
+    name: "",
+    dob: "",
+    tob: "",
+    mobile: "",
+    houseNo: "",
+    age: "",
     gender: "male",
-    place: "New Delhi, India"
+    place: ""
   });
 
   const [reportData, setReportData] = useState(null);
@@ -59,18 +59,20 @@ export default function App() {
             id: "birthday-month",
             titleEn: "Birthday Month Archetype",
             titleHi: "जन्म मास विश्लेषण",
-            data: {
-              birthMonth: "May (वैशाख/ज्येष्ठ)",
-              rulingPlanet: "Venus & Earth",
-              archetypeEn: "The Royal Custodian & Wealth Cultivator",
-              archetypeHi: "स्थिर समृद्धिकर्ता व सौंदर्य प्रेमी",
-              gemstone: "Emerald (पन्ना)",
-              element: "Earth",
-              powerQualitiesEn: "Financial acumen, appreciation of fine living, unyielding reliability.",
-              powerQualitiesHi: "धन संचय में निपुणता, सुरुचिपूर्ण जीवनशैली, और विश्वसनीय व्यक्तित्व।",
-              logicExplanationEn: "Solar Gate passage through Taurus generates grounding stability.",
-              logicExplanationHi: "सौर ऋतु चक्र सिद्धांत: सूर्य देव का वृषभ गोचर स्वाभाविक स्थिरता प्रदान करता है।"
-            }
+            data: (() => {
+              const monthNum = userInputs.dob ? new Date(userInputs.dob).getMonth() + 1 : 1;
+              const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+              return {
+                birthMonth: monthNames[monthNum - 1] || "Unknown",
+                rulingPlanet: vedicRes.ascendant?.ruler || "Sun",
+                archetypeEn: "The Cosmic Seeker",
+                archetypeHi: "ब्रह्मांडीय साधक",
+                gemstone: dobRes.luckyColors?.[0] || "Ruby",
+                element: vedicRes.ascendant?.element || "Fire",
+                powerQualitiesEn: `Governed by Mulank ${dobRes.mulank} — leadership, vision, and purpose.`,
+                powerQualitiesHi: `मूलांक ${dobRes.mulank} द्वारा शासित — नेतृत्व, दृष्टि और उद्देश्य।`,
+              };
+            })()
           },
           5: { id: "natal-astrology", titleEn: "Natal Astrology & Planetary Dignities", titleHi: "जन्म कुंडली व ग्रह स्थिति", data: { planets: vedicRes.planets, vimshottariDasha: vedicRes.vimshottariDasha } },
           6: {
@@ -162,10 +164,11 @@ export default function App() {
             titleEn: "Vastu Shastra & Directional Energy",
             titleHi: "वास्तु शास्त्र व दिशा ऊर्जा",
             data: {
-              inputHouseNo: userInputs.houseNo || "108",
-              houseNumberRoot: reduceToSingleDigit(sumOfDigits(userInputs.houseNo || "108")),
+              inputHouseNo: userInputs.houseNo || "1",
+              houseNumberRoot: reduceToSingleDigit(sumOfDigits(userInputs.houseNo || "1")),
               houseRuler: "Sun (सूर्य)",
               element: "Fire & Authority",
+              kuaNumber: dobRes.kuaNumber,
               synergyScore: "Exceptional Cosmic Resonance",
               synergyScoreHi: "अति-शुभ संयोग - अत्यंत फलदायी",
               directionalMap: [
@@ -186,14 +189,14 @@ export default function App() {
               logicExplanationHi: "मकान अंक मूलांक व 8 दिशाओं के पंचमहाभूत ऊर्जा संतुलन अनुसार।"
             }
           },
-          11: { id: "birth-chart", titleEn: "Accurate 12 Houses Vedic Birth Chart", titleHi: "सटीक 12 भाव जन्म कुंडली", data: vedicRes },
+          11: { id: "birth-chart", titleEn: "9 Grahas (Planets) in Vedic Kundli", titleHi: "वैदिक कुंडली में 9 ग्रह", data: vedicRes },
           13: {
             id: "name-decoder",
             titleEn: "Name Decoder & Success Optimizer",
             titleHi: "नाम विश्लेषण एवं सफलता सुधार",
             data: {
               originalName: userInputs.name,
-              chaldeanCompound: sumOfDigits(userInputs.name.replace(/[^A-Z]/gi, '')),
+              chaldeanCompound: sumOfDigits((userInputs.name || '').replace(/[^A-Z]/gi, '')),
               singleDigit: 1,
               logicExplanationEn: "Ancient Chaldean numerical vibrations calibrate personal magnetic aura.",
               logicExplanationHi: "कील्डियन अंकशास्त्र पद्धति द्वारा नाम के वर्णों की ऊर्जा का विश्लेषण।"
@@ -208,17 +211,33 @@ export default function App() {
     setLoading(false);
   };
 
-  // Initial calculation on mount
-  useEffect(() => {
-    calculateAllData(formData);
-  }, []);
+  /**
+   * Build a structured chartSummary from reportData that maps
+   * to the exact paths expected by aiAstrologer / clientAstrologer engines.
+   */
+  const buildChartSummary = () => {
+    if (!reportData) return null;
+    const m = reportData.modules || {};
+    return {
+      dobNumerology:    m[2]?.data  || null,
+      vedicChart:       m[11]?.data || null,
+      mobileNumerology: m[1]?.data  || null,
+      birthdayMonth:    m[4]?.data  || null,
+      medicalAstro:     m[9]?.data  || null,
+      vastu:            m[10]?.data || null,
+      nameDecoder:      m[13]?.data || null,
+    };
+  };
 
   const handlePrint = () => {
     window.print();
   };
 
+  // Determine if we have enough data to show the report
+  const hasReport = reportData !== null;
+
   return (
-    <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '20px 16px 80px 16px' }}>
+    <div className="app-container">
       {/* Header with Language Selector & Privacy Guarantee */}
       <Header lang={lang} setLang={setLang} onPrint={handlePrint} />
 
@@ -231,27 +250,50 @@ export default function App() {
         lang={lang}
       />
 
-      {/* 13 Astrological Domains Tab Navigator */}
-      <TabNavigation
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        lang={lang}
-      />
+      {/* Show tabs + report only after calculation */}
+      {hasReport ? (
+        <>
+          {/* 13 Astrological Domains Tab Navigator */}
+          <TabNavigation
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            lang={lang}
+          />
 
-      {/* Active Module Detailed View */}
-      <ModuleRenderer
-        activeTab={activeTab}
-        reportData={reportData}
-        primaryUser={formData}
-        lang={lang}
-      />
+          {/* Active Module Detailed View */}
+          <ModuleRenderer
+            activeTab={activeTab}
+            reportData={reportData}
+            primaryUser={formData}
+            lang={lang}
+          />
+        </>
+      ) : (
+        /* Empty state — shown before any calculation */
+        <div style={{
+          textAlign: 'center',
+          padding: '48px 20px',
+          background: 'rgba(255,255,255,0.7)',
+          borderRadius: '20px',
+          border: '1.5px dashed #C4B5FD',
+          marginTop: '8px'
+        }}>
+          <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🔮</div>
+          <h3 style={{ color: 'var(--text-primary)', marginBottom: '8px', fontSize: '1.15rem' }}>
+            Your Vedic Oracle Awaits
+          </h3>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', maxWidth: '400px', margin: '0 auto' }}>
+            Fill in your birth details above and click <strong>"Calculate Cosmic Vibrations"</strong> to generate your personalised 12-domain astrological report.
+          </p>
+        </div>
+      )}
 
       {/* Interactive Floating "+" Ask Question / Hinglish Voice Oracle */}
       <AskQuestionModal
         isOpen={isAskModalOpen}
         setIsOpen={setIsAskModalOpen}
         userProfile={formData}
-        chartData={reportData}
+        chartSummary={buildChartSummary()}
         lang={lang}
       />
     </div>
