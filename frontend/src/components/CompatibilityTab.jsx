@@ -57,10 +57,9 @@ export default function CompatibilityTab({ primaryUser, lang = 'en' }) {
               />
             </div>
             <div>
-              <label className="form-label">Partner's Time of Birth</label>
+              <label className="form-label">Partner's Time of Birth <span style={{ fontSize: '0.72rem', color: '#64748B', fontWeight: 400 }}>(Optional)</span></label>
               <input
                 type="time"
-                required
                 className="form-input"
                 value={partner.tob}
                 onChange={(e) => setPartner({ ...partner, tob: e.target.value })}

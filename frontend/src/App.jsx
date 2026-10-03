@@ -37,20 +37,31 @@ export default function App() {
   const calculateAllData = async (userInputs = formData) => {
     setLoading(true);
 
+    const safeInputs = {
+      name: userInputs.name || "Seeker",
+      dob: userInputs.dob,
+      tob: userInputs.tob || "12:00",
+      mobile: userInputs.mobile || "",
+      houseNo: userInputs.houseNo || "1",
+      age: userInputs.age || (userInputs.dob ? Math.max(1, new Date().getFullYear() - new Date(userInputs.dob).getFullYear()) : 25),
+      gender: userInputs.gender || "male",
+      place: userInputs.place || "New Delhi, India"
+    };
+
     // Attempt backend calculation first
-    const backendRes = await fetchFullAstrologyReport(userInputs);
+    const backendRes = await fetchFullAstrologyReport(safeInputs);
 
     if (backendRes && backendRes.success) {
       setReportData(backendRes);
     } else {
       // Fallback: Comprehensive client-side calculation
-      const mobileRes = analyzeMobileNumber(userInputs.mobile);
-      const dobRes = analyzeDOB(userInputs.dob, userInputs.gender);
-      const vedicRes = calculateVedicChart(userInputs.dob, userInputs.tob);
+      const mobileRes = analyzeMobileNumber(safeInputs.mobile);
+      const dobRes = analyzeDOB(safeInputs.dob, safeInputs.gender);
+      const vedicRes = calculateVedicChart(safeInputs.dob, safeInputs.tob);
 
       const clientPayload = {
         success: true,
-        profile: userInputs,
+        profile: safeInputs,
         modules: {
           1: { id: "mobile-numerology", titleEn: "12-Digit Mobile Numerology", titleHi: "12-अंकीय मोबाइल अंकशास्त्र", data: mobileRes },
           2: { id: "dob-numerology", titleEn: "DOB Numerology (Mulank & Bhagyank)", titleHi: "जन्मतिथि अंकशास्त्र (मूलांक व भाग्यांक)", data: dobRes },
@@ -189,7 +200,7 @@ export default function App() {
               logicExplanationHi: "मकान अंक मूलांक व 8 दिशाओं के पंचमहाभूत ऊर्जा संतुलन अनुसार।"
             }
           },
-          11: { id: "birth-chart", titleEn: "9 Grahas (Planets) in Vedic Kundli", titleHi: "वैदिक कुंडली में 9 ग्रह", data: vedicRes },
+          11: { id: "birth-chart", titleEn: "Kundli/BirthChart (12 Bhavas & 9 Grahas)", titleHi: "जन्म कुंडली / जन्मांग (12 भाव व 9 ग्रह)", data: vedicRes },
           13: {
             id: "name-decoder",
             titleEn: "Name Decoder & Success Optimizer",

@@ -67,42 +67,61 @@ export default function ModuleRenderer({ activeTab, reportData, primaryUser, lan
       {/* 1. Mobile Numerology */}
       {activeTab === 1 && d && (
         <div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px', marginBottom: '20px' }}>
-            <div className="pastel-card" style={{ padding: '16px', background: '#FFFFFF' }}>
-              <span style={{ fontSize: '0.75rem', color: '#64748B' }}>12-Digit Mobile Number</span>
-              <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#1E1B4B', marginTop: '4px' }}>{d.inputNumber}</div>
-              <span className="pastel-badge badge-sky" style={{ marginTop: '8px', fontSize: '0.72rem' }}>{d.countryCodeDetected} Country Code</span>
+          {!primaryUser?.mobile ? (
+            <div style={{ background: '#FAF5FF', border: '1.5px dashed #C4B5FD', borderRadius: '16px', padding: '24px', textAlign: 'center', marginBottom: '20px' }}>
+              <div style={{ fontSize: '2rem', marginBottom: '8px' }}>📱</div>
+              <h3 style={{ fontSize: '1.1rem', color: '#4C1D95', marginBottom: '6px' }}>
+                {lang === 'hi' ? 'मोबाइल नंबर दर्ज नहीं किया गया है' : 'Mobile Number Not Provided'}
+              </h3>
+              <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', maxWidth: '500px', margin: '0 auto 14px' }}>
+                {lang === 'hi' 
+                  ? '12-अंकीय मोबाइल अंकशास्त्र एवं व्यावसायिक ऊर्जा विश्लेषण के लिए ऊपर फॉर्म में अपना 10 या 12 अंकों का मोबाइल नंबर दर्ज करें।' 
+                  : 'Enter your 10 or 12 digit mobile number in the form above to unlock your personalized Mobile Numerology & Business Energy Matrix.'}
+              </p>
+              <span className="pastel-badge badge-lavender" style={{ fontSize: '0.78rem' }}>
+                {lang === 'hi' ? 'केवल नाम और जन्मतिथि अनिवार्य है — मोबाइल नंबर ऐच्छिक है' : 'Only Name & Date of Birth are required — Mobile number is optional'}
+              </span>
             </div>
+          ) : (
+            <>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px', marginBottom: '20px' }}>
+                <div className="pastel-card" style={{ padding: '16px', background: '#FFFFFF' }}>
+                  <span style={{ fontSize: '0.75rem', color: '#64748B' }}>12-Digit Mobile Number</span>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#1E1B4B', marginTop: '4px' }}>{d.inputNumber}</div>
+                  <span className="pastel-badge badge-sky" style={{ marginTop: '8px', fontSize: '0.72rem' }}>{d.countryCodeDetected} Country Code</span>
+                </div>
 
-            <div className="pastel-card" style={{ padding: '16px', background: '#FFFFFF' }}>
-              <span style={{ fontSize: '0.75rem', color: '#64748B' }}>Compound Sum & Root</span>
-              <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#7C3AED', marginTop: '2px' }}>
-                {d.compoundSum} <span style={{ fontSize: '1rem', color: '#94A3B8' }}>&rarr;</span> {d.singleDigit}
+                <div className="pastel-card" style={{ padding: '16px', background: '#FFFFFF' }}>
+                  <span style={{ fontSize: '0.75rem', color: '#64748B' }}>Compound Sum & Root</span>
+                  <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#7C3AED', marginTop: '2px' }}>
+                    {d.compoundSum} <span style={{ fontSize: '1rem', color: '#94A3B8' }}>&rarr;</span> {d.singleDigit}
+                  </div>
+                  <span style={{ fontSize: '0.78rem', color: '#5B21B6', fontWeight: 600 }}>Ruler: {d.planetaryRuler}</span>
+                </div>
+
+                <div className="pastel-card" style={{ padding: '16px', background: '#FFFFFF' }}>
+                  <span style={{ fontSize: '0.75rem', color: '#64748B' }}>Last 4-Digits Energy</span>
+                  <div style={{ fontSize: '1.4rem', fontWeight: 800, color: '#BE123C', marginTop: '2px' }}>
+                    {d.last4Digits} <span style={{ fontSize: '0.9rem', color: '#94A3B8' }}>&rarr; {d.last4Root}</span>
+                  </div>
+                  <span style={{ fontSize: '0.75rem', color: '#9F1239' }}>Crucial conversion anchor</span>
+                </div>
               </div>
-              <span style={{ fontSize: '0.78rem', color: '#5B21B6', fontWeight: 600 }}>Ruler: {d.planetaryRuler}</span>
-            </div>
 
-            <div className="pastel-card" style={{ padding: '16px', background: '#FFFFFF' }}>
-              <span style={{ fontSize: '0.75rem', color: '#64748B' }}>Last 4-Digits Energy</span>
-              <div style={{ fontSize: '1.4rem', fontWeight: 800, color: '#BE123C', marginTop: '2px' }}>
-                {d.last4Digits} <span style={{ fontSize: '0.9rem', color: '#94A3B8' }}>&rarr; {d.last4Root}</span>
+              <div style={{ background: '#FAF5FF', padding: '16px', borderRadius: '12px', border: '1px solid #E9D5FF', marginBottom: '16px' }}>
+                <h4 style={{ fontSize: '0.95rem', color: '#5B21B6', marginBottom: '6px' }}>Business & Wealth Resonance:</h4>
+                <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', marginBottom: '8px' }}>
+                  {lang === 'hi' ? d.suitability?.suitabilityHi : d.suitability?.suitabilityEn}
+                </p>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  <span className="pastel-badge badge-mint">{d.suitability?.businessScore}</span>
+                  <span className="pastel-badge badge-amber">{d.suitability?.personalScore}</span>
+                </div>
               </div>
-              <span style={{ fontSize: '0.75rem', color: '#9F1239' }}>Crucial conversion anchor</span>
-            </div>
-          </div>
 
-          <div style={{ background: '#FAF5FF', padding: '16px', borderRadius: '12px', border: '1px solid #E9D5FF', marginBottom: '16px' }}>
-            <h4 style={{ fontSize: '0.95rem', color: '#5B21B6', marginBottom: '6px' }}>Business & Wealth Resonance:</h4>
-            <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', marginBottom: '8px' }}>
-              {lang === 'hi' ? d.suitability?.suitabilityHi : d.suitability?.suitabilityEn}
-            </p>
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              <span className="pastel-badge badge-mint">{d.suitability?.businessScore}</span>
-              <span className="pastel-badge badge-amber">{d.suitability?.personalScore}</span>
-            </div>
-          </div>
-
-          {renderLogicBox(d.logicExplanationEn, d.logicExplanationHi)}
+              {renderLogicBox(d.logicExplanationEn, d.logicExplanationHi)}
+            </>
+          )}
         </div>
       )}
 
@@ -136,9 +155,11 @@ export default function ModuleRenderer({ activeTab, reportData, primaryUser, lan
           </div>
 
           {/* Lo Shu Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px', alignItems: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px', alignItems: 'start' }}>
             <div className="pastel-card" style={{ padding: '20px', textAlign: 'center' }}>
-              <h4 style={{ fontSize: '0.95rem', marginBottom: '12px', color: '#4C1D95' }}>3x3 Lo Shu Energy Grid:</h4>
+              <h4 style={{ fontSize: '0.95rem', marginBottom: '12px', color: '#4C1D95' }}>
+                {lang === 'hi' ? '3×3 लो-शू ऊर्जा ग्रिड:' : '3×3 Lo Shu Energy Grid:'}
+              </h4>
               <div className="loshu-grid">
                 {[4, 9, 2, 3, 5, 7, 8, 1, 6].map((num) => {
                   const count = d.loShuGrid ? d.loShuGrid[num] : 0;
@@ -152,10 +173,15 @@ export default function ModuleRenderer({ activeTab, reportData, primaryUser, lan
                   );
                 })}
               </div>
+              <p style={{ fontSize: '0.7rem', color: '#94A3B8', marginTop: '8px' }}>
+                {lang === 'hi' ? '— खाली संख्याएं = कमजोर ऊर्जा क्षेत्र' : '— Empty cells = areas needing remedy'}
+              </p>
             </div>
 
             <div>
-              <h4 style={{ fontSize: '0.95rem', color: '#1E1B4B', marginBottom: '8px' }}>Life Interpretations:</h4>
+              <h4 style={{ fontSize: '0.95rem', color: '#1E1B4B', marginBottom: '8px' }}>
+                {lang === 'hi' ? 'जीवन व्याख्या:' : 'Life Interpretations:'}
+              </h4>
               <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', marginBottom: '8px' }}>
                 {lang === 'hi' ? d.analysisHi?.mulankText : d.analysisEn?.mulankText}
               </p>
@@ -167,6 +193,62 @@ export default function ModuleRenderer({ activeTab, reportData, primaryUser, lan
               </p>
             </div>
           </div>
+
+          {/* Lo Shu Empty Cell Remedies */}
+          {d.loShuGrid && (() => {
+            const LOSHU_REMEDIES = {
+              1: { planet: 'Sun', planetHi: 'सूर्य', domainEn: 'Confidence & Leadership', domainHi: 'आत्मविश्वास व नेतृत्व', remedyEn: 'Offer water to Sun at sunrise daily. Wear Ruby (Manikya) in gold on Sunday. Chant "Om Suryaya Namah" 12x every morning.', remedyHi: 'प्रतिदिन सूर्योदय पर सूर्य को जल अर्पित करें। रविवार को सोने में माणिक्य धारण करें। प्रातः "ॐ सूर्याय नमः" का 12 बार जप करें।', color: '#DC2626', emoji: '☀️' },
+              2: { planet: 'Moon', planetHi: 'चंद्र', domainEn: 'Intuition & Relationships', domainHi: 'अंतर्ज्ञान व संबंध', remedyEn: 'Wear Pearl or white Moonstone on Monday. Drink milk at night. Place silver bowl of water in North-East corner.', remedyHi: 'सोमवार को मोती या मूनस्टोन धारण करें। रात को दूध पिएं। ईशान कोण में चांदी के पात्र में जल रखें।', color: '#0369A1', emoji: '🌙' },
+              3: { planet: 'Jupiter', planetHi: 'बृहस्पति', domainEn: 'Wisdom & Growth', domainHi: 'ज्ञान व विकास', remedyEn: 'Wear Yellow Sapphire (Pukhraj) in gold on Thursday. Feed Brahmins on Thursdays. Read Vishnu Sahasranam daily.', remedyHi: 'गुरुवार को सोने में पुखराज धारण करें। गुरुवार को ब्राह्मण को भोजन दें। प्रतिदिन विष्णु सहस्रनाम पढ़ें।', color: '#B45309', emoji: '📚' },
+              4: { planet: 'Rahu', planetHi: 'राहु', domainEn: 'Stability & Planning', domainHi: 'स्थिरता व योजना', remedyEn: 'Wear Hessonite Garnet (Gomed) after expert consultation. Donate blue items on Saturdays. Practice daily 10-min meditation.', remedyHi: 'विशेषज्ञ के परामर्श से गोमेद धारण करें। शनिवार को नीले वस्त्र दान करें। प्रतिदिन 10 मिनट ध्यान करें।', color: '#475569', emoji: '🌐' },
+              5: { planet: 'Mercury', planetHi: 'बुध', domainEn: 'Communication & Balance', domainHi: 'संवाद व संतुलन', remedyEn: 'Wear Emerald (Panna) in gold on Wednesday. Chant "Om Budhaya Namah" 108x on Wednesdays. Keep green plants at home.', remedyHi: 'बुधवार को सोने में पन्ना धारण करें। "ॐ बुधाय नमः" का बुधवार को 108 बार जप करें। घर में हरे पौधे रखें।', color: '#059669', emoji: '💬' },
+              6: { planet: 'Venus', planetHi: 'शुक्र', domainEn: 'Love & Prosperity', domainHi: 'प्रेम व समृद्धि', remedyEn: 'Wear Diamond or Opal (Heera/Opal) on Friday. Offer white flowers to Goddess Lakshmi. Use rose quartz crystals in bedroom.', remedyHi: 'शुक्रवार को हीरा या ओपल धारण करें। माता लक्ष्मी को सफेद फूल अर्पित करें। शयनकक्ष में गुलाब स्फटिक रखें।', color: '#7C3AED', emoji: '💎' },
+              7: { planet: 'Ketu', planetHi: 'केतु', domainEn: 'Spirituality & Intuition', domainHi: 'अध्यात्म व अंतर्ज्ञान', remedyEn: "Wear Cat's Eye (Lahsunia) after expert consultation. Practice Yoga and meditation. Visit Shiva temples on Thursdays.", remedyHi: 'विशेषज्ञ परामर्श से लहसुनिया धारण करें। प्रतिदिन योग और ध्यान करें। गुरुवार को शिव मंदिर जाएं।', color: '#6D28D9', emoji: '🧘' },
+              8: { planet: 'Saturn', planetHi: 'शनि', domainEn: 'Karma & Discipline', domainHi: 'कर्म व अनुशासन', remedyEn: 'Wear Blue Sapphire (Neelam) after expert consultation. Feed crows and dogs on Saturdays. Donate sesame/oil on Saturdays.', remedyHi: 'विशेषज्ञ परामर्श के बाद नीलम धारण करें। शनिवार को कौवों और कुत्तों को खाना दें। शनिवार को तिल/तेल का दान करें।', color: '#1D4ED8', emoji: '⚖️' },
+              9: { planet: 'Mars', planetHi: 'मंगल', domainEn: 'Energy & Courage', domainHi: 'ऊर्जा व साहस', remedyEn: 'Wear Red Coral (Moonga) in copper/gold on Tuesday. Chant "Om Mangalaya Namah" 108x. Offer red flowers to Hanuman ji.', remedyHi: 'मंगलवार को तांबे/सोने में मूंगा धारण करें। "ॐ मंगलाय नमः" का 108 बार जप करें। हनुमान जी को लाल फूल अर्पित करें।', color: '#B91C1C', emoji: '🔥' }
+            };
+            const emptyCells = [1,2,3,4,5,6,7,8,9].filter(n => !(d.loShuGrid[n] > 0));
+            if (emptyCells.length === 0) return (
+              <div style={{ marginTop: '16px', background: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: '12px', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '1.2rem' }}>✅</span>
+                <span style={{ fontSize: '0.84rem', color: '#166534', fontWeight: 600 }}>
+                  {lang === 'hi' ? 'सभी 9 संख्याएं लो-शू ग्रिड में उपस्थित हैं — आपकी ऊर्जा पूर्ण और संतुलित है!' : 'All 9 numbers present in your Lo Shu Grid — your energy matrix is complete and well-balanced!'}
+                </span>
+              </div>
+            );
+            return (
+              <div style={{ marginTop: '20px', background: 'linear-gradient(135deg, #FFF7ED 0%, #FEF3C7 100%)', border: '1.5px solid #FDE68A', borderRadius: '16px', padding: '18px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#92400E', fontWeight: 700, fontSize: '0.92rem', marginBottom: '14px' }}>
+                  <span style={{ fontSize: '1.1rem' }}>🔧</span>
+                  <span>{lang === 'hi' ? `लो-शू ग्रिड में खाली ${emptyCells.length} संख्याओं के उपाय (रत्न + मंत्र + दान):` : `Lo Shu Grid — Remedies for ${emptyCells.length} Missing Number(s) (Gems + Mantras + Seva):`}</span>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '12px' }}>
+                  {emptyCells.map(num => {
+                    const r = LOSHU_REMEDIES[num];
+                    if (!r) return null;
+                    return (
+                      <div key={num} style={{ background: '#FFFFFF', borderRadius: '12px', padding: '12px 14px', border: `1.5px solid ${r.color}30`, borderLeft: `4px solid ${r.color}` }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+                          <span style={{ fontSize: '1.1rem' }}>{r.emoji}</span>
+                          <strong style={{ fontSize: '0.85rem', color: r.color }}>
+                            {lang === 'hi' ? `अंक ${num} — ${r.planetHi} (${r.domainHi})` : `Number ${num} — ${r.planet} (${r.domainEn})`}
+                          </strong>
+                        </div>
+                        <p style={{ fontSize: '0.78rem', color: '#475569', lineHeight: 1.55, margin: 0 }}>
+                          {lang === 'hi' ? r.remedyHi : r.remedyEn}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+                <p style={{ fontSize: '0.73rem', color: '#B45309', marginTop: '12px', padding: '8px 12px', background: '#FFFBEB', borderRadius: '8px' }}>
+                  {lang === 'hi'
+                    ? '💡 लो-शू ग्रिड में जो संख्याएं शून्य हैं वे ग्रह ऊर्जा में कमी दर्शाती हैं। उपरोक्त उपायों से उस ग्रह की ऊर्जा को सक्रिय किया जा सकता है।'
+                    : '💡 Missing Lo Shu numbers indicate weak planetary energies. The above remedies activate those planets and restore balance to your life areas.'}
+                </p>
+              </div>
+            );
+          })()}
 
           {/* 💎 Gem Recommendation from Mulank */}
           {d.mulank && (() => {
@@ -507,9 +589,60 @@ export default function ModuleRenderer({ activeTab, reportData, primaryUser, lan
         </div>
       )}
 
-      {/* 11. Nine Grahas in the Vedic Kundli */}
+      {/* 11. Kundli/BirthChart — 12 Bhavas + 12 Rashis + 9 Grahas */}
       {activeTab === 11 && d && (
         <div>
+          {/* Educational Banner: 12 Houses vs 12 Signs vs 9 Planets */}
+          <div style={{ background: 'linear-gradient(135deg, #FAF5FF 0%, #EDE9FE 100%)', border: '1.5px solid #C4B5FD', borderRadius: '14px', padding: '14px 18px', marginBottom: '20px' }}>
+            <div style={{ fontSize: '0.85rem', color: '#4C1D95', fontWeight: 700, marginBottom: '10px' }}>
+              {lang === 'hi' ? '🔮 वैदिक कुंडली के तीन स्तंभ — अंतर समझें' : '🔮 Three Pillars of Vedic Kundli — Understanding the Difference'}
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px' }}>
+              <div style={{ background: '#FFFFFF', borderRadius: '10px', padding: '10px 12px', border: '1px solid #E9D5FF' }}>
+                <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#7C3AED', marginBottom: '4px' }}>🏠 {lang === 'hi' ? '12 भाव (Bhavas / Houses)' : '12 Bhavas (Houses)'}</div>
+                <div style={{ fontSize: '0.72rem', color: '#64748B' }}>{lang === 'hi' ? 'जन्म कुंडली के 12 निश्चित स्थान — लग्न से गिने जाते हैं। प्रत्येक भाव जीवन का एक क्षेत्र नियंत्रित करता है।' : 'Fixed structural positions (1–12) from Lagna. Each Bhava governs a specific life domain (wealth, career, marriage etc.)'}</div>
+              </div>
+              <div style={{ background: '#FFFFFF', borderRadius: '10px', padding: '10px 12px', border: '1px solid #E9D5FF' }}>
+                <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#059669', marginBottom: '4px' }}>♈ {lang === 'hi' ? '12 राशियां (Rashis / Zodiac Signs)' : '12 Rashis (Zodiac Signs)'}</div>
+                <div style={{ fontSize: '0.72rem', color: '#64748B' }}>{lang === 'hi' ? 'मेष से मीन तक 12 राशियां — ये भावों में स्थित होती हैं और लग्न अनुसार बदलती हैं। भाव और राशि अलग-अलग होते हैं।' : 'Aries to Pisces — 12 zodiac signs rotate into houses based on Lagna. A house and a sign are NOT the same thing.'}</div>
+              </div>
+              <div style={{ background: '#FFFFFF', borderRadius: '10px', padding: '10px 12px', border: '1px solid #E9D5FF' }}>
+                <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#DC2626', marginBottom: '4px' }}>🪐 {lang === 'hi' ? '9 ग्रह (नवग्रह / Planets)' : '9 Navagrahas (Planets)'}</div>
+                <div style={{ fontSize: '0.72rem', color: '#64748B' }}>{lang === 'hi' ? 'सूर्य, चंद्र, मंगल, बुध, बृहस्पति, शुक्र, शनि, राहु, केतु — ये 9 ग्रह विभिन्न भावों में स्थित होकर जीवन पर प्रभाव डालते हैं।' : 'Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn, Rahu & Ketu — these 9 planets occupy the Bhavas and shape every area of life.'}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* 9 Grahas Quick Summary Row */}
+          {d.planets && d.planets.length > 0 && (
+            <div style={{ marginBottom: '16px' }}>
+              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#4C1D95', marginBottom: '8px' }}>
+                🪐 {lang === 'hi' ? 'नवग्रह — 9 ग्रहों की वर्तमान भाव स्थिति:' : '9 Navagrahas — Planetary Positions in Your Kundli:'}
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '6px' }}>
+                {d.planets.map((planet) => {
+                  const PLANET_COLOR = { Sun: '#DC2626', Moon: '#0369A1', Mars: '#B91C1C', Mercury: '#059669', Jupiter: '#B45309', Venus: '#7C3AED', Saturn: '#1D4ED8', Rahu: '#475569', Ketu: '#6D28D9' };
+                  const PLANET_EMOJI = { Sun: '☀️', Moon: '🌙', Mars: '♂️', Mercury: '☿', Jupiter: '♃', Venus: '♀️', Saturn: '♄', Rahu: '🌑', Ketu: '☄️' };
+                  const color = PLANET_COLOR[planet.key] || '#4C1D95';
+                  const emoji = PLANET_EMOJI[planet.key] || '⭐';
+                  return (
+                    <div key={planet.key} style={{ background: '#FAFAFA', border: `1.5px solid ${color}25`, borderLeft: `3px solid ${color}`, borderRadius: '8px', padding: '7px 10px' }}>
+                      <div style={{ fontSize: '0.75rem', fontWeight: 800, color, marginBottom: '2px' }}>
+                        {emoji} {lang === 'hi' ? planet.nameHi : planet.nameEn}
+                      </div>
+                      <div style={{ fontSize: '0.68rem', color: '#475569' }}>
+                        {lang === 'hi' ? `${planet.house} भाव · ${planet.signHi}` : `H${planet.house} · ${planet.signEn}`}
+                      </div>
+                      <div style={{ fontSize: '0.62rem', color: '#94A3B8', marginTop: '1px' }}>
+                        {planet.degInSign}° · {lang === 'hi' ? (planet.dignityHi || planet.dignity?.split(' ')[0]) : planet.dignity?.split(' ')[0]}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           <KundaliChart vedicChart={d} lang={lang} />
           {renderLogicBox(d.logicExplanationEn, d.logicExplanationHi)}
         </div>

@@ -129,17 +129,20 @@ export function calculateVedicChart(dobString, tobString = "12:00", lat = 28.613
   const ascendantSign = ZODIAC_SIGNS[ascSignIndex];
   const ascDegreeInSign = siderealAsc % 30;
 
-  // 4. Other Planets approximations (Sidereal)
+  // 4. All 12 Grahas (Planets & Nodes) approximations (Sidereal)
   const planetsData = [
-    { key: "Sun", nameEn: "Sun", nameHi: "सूर्य", deg: siderealSun, speed: "1°/day", exalt: 1, debilitate: 7, own: [5] },
-    { key: "Moon", nameEn: "Moon", nameHi: "चंद्र", deg: siderealMoon, speed: "13.2°/day", exalt: 2, debilitate: 8, own: [4] },
-    { key: "Mars", nameEn: "Mars", nameHi: "मंगल", deg: normalizeDegree((siderealSun * 0.53 + 45 + d_days * 0.524) % 360), exalt: 10, debilitate: 4, own: [1, 8] },
-    { key: "Mercury", nameEn: "Mercury", nameHi: "बुध", deg: normalizeDegree((siderealSun + ((day * 7) % 28) - 14) % 360), exalt: 6, debilitate: 12, own: [3, 6] },
-    { key: "Jupiter", nameEn: "Jupiter", nameHi: "बृहस्पति", deg: normalizeDegree((siderealSun * 0.084 + (year % 12) * 30 + 12) % 360), exalt: 4, debilitate: 10, own: [9, 12] },
-    { key: "Venus", nameEn: "Venus", nameHi: "शुक्र", deg: normalizeDegree((siderealSun + ((day * 9) % 45) - 22) % 360), exalt: 12, debilitate: 6, own: [2, 7] },
-    { key: "Saturn", nameEn: "Saturn", nameHi: "शनि", deg: normalizeDegree(((year - 1996) * 12.2 + month * 1.0) % 360), exalt: 7, debilitate: 1, own: [10, 11] },
-    { key: "Rahu", nameEn: "Rahu", nameHi: "राहु", deg: normalizeDegree((360 - ((d_days * 0.05295) % 360)) % 360), exalt: 2, debilitate: 8, own: [11] },
-    { key: "Ketu", nameEn: "Ketu", nameHi: "केतु", deg: normalizeDegree((360 - ((d_days * 0.05295) % 360) + 180) % 360), exalt: 8, debilitate: 2, own: [8] }
+    { key: "Sun", nameEn: "Sun (Surya)", nameHi: "सूर्य (Surya)", deg: siderealSun, speed: "1°/day", exalt: 1, debilitate: 7, own: [5] },
+    { key: "Moon", nameEn: "Moon (Chandra)", nameHi: "चंद्र (Chandra)", deg: siderealMoon, speed: "13.2°/day", exalt: 2, debilitate: 8, own: [4] },
+    { key: "Mars", nameEn: "Mars (Mangal)", nameHi: "मंगल (Mangal)", deg: normalizeDegree((siderealSun * 0.53 + 45 + d_days * 0.524) % 360), exalt: 10, debilitate: 4, own: [1, 8] },
+    { key: "Mercury", nameEn: "Mercury (Budh)", nameHi: "बुध (Budh)", deg: normalizeDegree((siderealSun + ((day * 7) % 28) - 14) % 360), exalt: 6, debilitate: 12, own: [3, 6] },
+    { key: "Jupiter", nameEn: "Jupiter (Guru)", nameHi: "बृहस्पति (Guru)", deg: normalizeDegree((siderealSun * 0.084 + (year % 12) * 30 + 12) % 360), exalt: 4, debilitate: 10, own: [9, 12] },
+    { key: "Venus", nameEn: "Venus (Shukra)", nameHi: "शुक्र (Shukra)", deg: normalizeDegree((siderealSun + ((day * 9) % 45) - 22) % 360), exalt: 12, debilitate: 6, own: [2, 7] },
+    { key: "Saturn", nameEn: "Saturn (Shani)", nameHi: "शनि (Shani)", deg: normalizeDegree(((year - 1996) * 12.2 + month * 1.0) % 360), exalt: 7, debilitate: 1, own: [10, 11] },
+    { key: "Rahu", nameEn: "Rahu (North Node)", nameHi: "राहु (Rahu)", deg: normalizeDegree((360 - ((d_days * 0.05295) % 360)) % 360), exalt: 2, debilitate: 8, own: [11] },
+    { key: "Ketu", nameEn: "Ketu (South Node)", nameHi: "केतु (Ketu)", deg: normalizeDegree((360 - ((d_days * 0.05295) % 360) + 180) % 360), exalt: 8, debilitate: 2, own: [8] },
+    { key: "Uranus", nameEn: "Uranus (Arun)", nameHi: "अरुण (Uranus)", deg: normalizeDegree(((year - 1980) * 4.28 + month * 0.3) % 360), exalt: 11, debilitate: 5, own: [11] },
+    { key: "Neptune", nameEn: "Neptune (Varun)", nameHi: "वरुण (Neptune)", deg: normalizeDegree(((year - 1984) * 2.18 + month * 0.2) % 360), exalt: 12, debilitate: 6, own: [12] },
+    { key: "Pluto", nameEn: "Pluto (Yama)", nameHi: "यम (Pluto)", deg: normalizeDegree(((year - 1989) * 1.45 + month * 0.1) % 360), exalt: 8, debilitate: 2, own: [8] }
   ];
 
   // Map each planet to Sign and House (relative to Ascendant Sign)

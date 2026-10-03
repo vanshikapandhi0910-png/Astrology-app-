@@ -100,7 +100,7 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
 
       <form onSubmit={handleSubmit}>
         <div className="form-input-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
-          {/* 1. Full Name */}
+          {/* 1. Full Name (REQUIRED) */}
           <div>
             <label className="form-label">
               <User size={14} style={{ display: 'inline', marginRight: '4px' }} /> {t.nameLabel} *
@@ -115,7 +115,7 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
             />
           </div>
 
-          {/* 2. Date of Birth */}
+          {/* 2. Date of Birth (REQUIRED) */}
           <div>
             <label className="form-label">
               <Calendar size={14} style={{ display: 'inline', marginRight: '4px' }} /> {t.dobLabel} *
@@ -129,10 +129,10 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
             />
           </div>
 
-          {/* 3. Time of Birth (Explicit 12-Hour format with AM/PM toggle) */}
+          {/* 3. Time of Birth (OPTIONAL - Default 12:00 Noon if omitted) */}
           <div style={{ gridColumn: 'span 1' }}>
             <label className="form-label">
-              <Clock size={14} style={{ display: 'inline', marginRight: '4px' }} /> {t.tobLabel} *
+              <Clock size={14} style={{ display: 'inline', marginRight: '4px' }} /> {t.tobLabel} <span style={{ fontSize: '0.72rem', color: '#64748B', fontWeight: 400 }}>(Optional - Default 12:00 PM)</span>
             </label>
             <div className="tob-row">
               {/* Hours (1-12) */}
@@ -140,7 +140,7 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
                 className="form-input"
                 style={{ padding: '10px 8px', textAlign: 'center', fontWeight: 600, flex: 1 }}
                 value={(() => {
-                  if (!formData.tob) return '10';
+                  if (!formData.tob) return '12';
                   const [h] = formData.tob.split(':');
                   const hourNum = parseInt(h, 10);
                   const h12 = hourNum % 12 === 0 ? 12 : hourNum % 12;
@@ -149,7 +149,7 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
                 onChange={(e) => {
                   const newH12 = parseInt(e.target.value, 10);
                   const currentM = formData.tob ? formData.tob.split(':')[1] || '00' : '00';
-                  const currentH = formData.tob ? parseInt(formData.tob.split(':')[0], 10) : 10;
+                  const currentH = formData.tob ? parseInt(formData.tob.split(':')[0], 10) : 12;
                   const isPM = currentH >= 12;
                   let new24H = isPM ? (newH12 === 12 ? 12 : newH12 + 12) : (newH12 === 12 ? 0 : newH12);
                   setFormData({ ...formData, tob: `${String(new24H).padStart(2, '0')}:${currentM}` });
@@ -169,7 +169,7 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
                 value={formData.tob ? formData.tob.split(':')[1] || '00' : '00'}
                 onChange={(e) => {
                   const newM = e.target.value;
-                  const currentH = formData.tob ? formData.tob.split(':')[0] || '10' : '10';
+                  const currentH = formData.tob ? formData.tob.split(':')[0] || '12' : '12';
                   setFormData({ ...formData, tob: `${currentH}:${newM}` });
                 }}
               >
@@ -183,7 +183,7 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
                 <button
                   type="button"
                   onClick={() => {
-                    const [h, m] = (formData.tob || '10:00').split(':');
+                    const [h, m] = (formData.tob || '12:00').split(':');
                     let hourNum = parseInt(h, 10);
                     if (hourNum >= 12) hourNum -= 12;
                     setFormData({ ...formData, tob: `${String(hourNum).padStart(2, '0')}:${m || '00'}` });
@@ -191,8 +191,8 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
                   style={{
                     padding: '8px 10px',
                     border: 'none',
-                    background: (parseInt((formData.tob || '10:00').split(':')[0], 10) < 12) ? 'linear-gradient(135deg, #7C3AED 0%, #6366F1 100%)' : 'transparent',
-                    color: (parseInt((formData.tob || '10:00').split(':')[0], 10) < 12) ? '#FFFFFF' : '#64748B',
+                    background: (parseInt((formData.tob || '12:00').split(':')[0], 10) < 12) ? 'linear-gradient(135deg, #7C3AED 0%, #6366F1 100%)' : 'transparent',
+                    color: (parseInt((formData.tob || '12:00').split(':')[0], 10) < 12) ? '#FFFFFF' : '#64748B',
                     fontWeight: 700,
                     fontSize: '0.8rem',
                     cursor: 'pointer',
@@ -205,7 +205,7 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
                 <button
                   type="button"
                   onClick={() => {
-                    const [h, m] = (formData.tob || '10:00').split(':');
+                    const [h, m] = (formData.tob || '12:00').split(':');
                     let hourNum = parseInt(h, 10);
                     if (hourNum < 12) hourNum += 12;
                     setFormData({ ...formData, tob: `${String(hourNum).padStart(2, '0')}:${m || '00'}` });
@@ -213,8 +213,8 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
                   style={{
                     padding: '8px 10px',
                     border: 'none',
-                    background: (parseInt((formData.tob || '10:00').split(':')[0], 10) >= 12) ? 'linear-gradient(135deg, #EC4899 0%, #BE123C 100%)' : 'transparent',
-                    color: (parseInt((formData.tob || '10:00').split(':')[0], 10) >= 12) ? '#FFFFFF' : '#64748B',
+                    background: (parseInt((formData.tob || '12:00').split(':')[0], 10) >= 12) ? 'linear-gradient(135deg, #EC4899 0%, #BE123C 100%)' : 'transparent',
+                    color: (parseInt((formData.tob || '12:00').split(':')[0], 10) >= 12) ? '#FFFFFF' : '#64748B',
                     fontWeight: 700,
                     fontSize: '0.8rem',
                     cursor: 'pointer',
@@ -230,25 +230,24 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
             {formData.tob && (
               <div style={{ marginTop: '4px', fontSize: '0.74rem', color: '#6D28D9', fontWeight: 600 }}>
                 ⏰ Selected: {(() => {
-                  const [h, m] = (formData.tob || '10:00').split(':');
+                  const [h, m] = (formData.tob || '12:00').split(':');
                   const hNum = parseInt(h, 10);
                   const isPM = hNum >= 12;
                   const h12 = hNum % 12 === 0 ? 12 : hNum % 12;
-                  return `${String(h12).padStart(2, '0')}:${m || '00'} ${isPM ? 'PM (रात्रिकाल/अपराह्न)' : 'AM (प्रातःकाल/पूर्वाह्न)'} [24h: ${formData.tob}]`;
+                  return `${String(h12).padStart(2, '0')}:${m || '00'} ${isPM ? 'PM (अपराह्न/रात्रिकाल)' : 'AM (प्रातःकाल/पूर्वाह्न)'}`;
                 })()}
               </div>
             )}
           </div>
 
-          {/* 4. Mobile Number (12 Digits with Country Code) */}
+          {/* 4. Mobile Number (OPTIONAL) */}
           <div>
             <label className="form-label">
-              <Phone size={14} style={{ display: 'inline', marginRight: '4px' }} /> {t.mobileLabel} *
+              <Phone size={14} style={{ display: 'inline', marginRight: '4px' }} /> {t.mobileLabel} <span style={{ fontSize: '0.72rem', color: '#64748B', fontWeight: 400 }}>(Optional)</span>
             </label>
             <input
               type="text"
-              required
-              placeholder="+919876543210 (12 digits)"
+              placeholder="e.g. +919876543210"
               className="form-input"
               value={formData.mobile}
               onChange={handleMobileChange}
@@ -256,19 +255,18 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
             />
             {mobileError && (
               <span style={{ fontSize: '0.75rem', color: '#BE123C', marginTop: '3px', display: 'block' }}>
-                ⚠️ {mobileError}
+                ℹ️ {mobileError}
               </span>
             )}
           </div>
 
-          {/* 5. House / Flat Number */}
+          {/* 5. House / Flat Number (OPTIONAL) */}
           <div>
             <label className="form-label">
-              <Home size={14} style={{ display: 'inline', marginRight: '4px' }} /> {t.houseNoLabel} *
+              <Home size={14} style={{ display: 'inline', marginRight: '4px' }} /> {t.houseNoLabel} <span style={{ fontSize: '0.72rem', color: '#64748B', fontWeight: 400 }}>(Optional)</span>
             </label>
             <input
               type="text"
-              required
               placeholder="e.g. 108 or Flat A-402"
               className="form-input"
               value={formData.houseNo}
@@ -278,7 +276,7 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
 
           {/* 6. Age */}
           <div>
-            <label className="form-label">{t.ageLabel}</label>
+            <label className="form-label">{t.ageLabel} <span style={{ fontSize: '0.72rem', color: '#64748B', fontWeight: 400 }}>(Auto-calculated)</span></label>
             <input
               type="number"
               placeholder="Auto-calculated"
@@ -302,10 +300,10 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
             </select>
           </div>
 
-          {/* 8. Birth Place / City */}
+          {/* 8. Birth Place / City (OPTIONAL) */}
           <div>
             <label className="form-label">
-              <MapPin size={14} style={{ display: 'inline', marginRight: '4px' }} /> {t.placeLabel}
+              <MapPin size={14} style={{ display: 'inline', marginRight: '4px' }} /> {t.placeLabel} <span style={{ fontSize: '0.72rem', color: '#64748B', fontWeight: 400 }}>(Optional)</span>
             </label>
             <input
               type="text"
@@ -318,7 +316,10 @@ export default function UserInputForm({ formData, setFormData, onCalculate, load
         </div>
 
         {/* Submit Button */}
-        <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'flex-end' }}>
+        <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+          <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+            ✨ <strong>Only Name &amp; Date of Birth required.</strong> All other parameters are optional and defaulted gracefully.
+          </p>
           <button
             type="submit"
             className="btn-primary"

@@ -80,7 +80,7 @@ router.post('/calculate-all', (req, res) => {
         8: { id: "mundane-astrology", titleEn: "Mundane Global Astrology", titleHi: "मेदनीय (वैश्विक) ज्योतिष", data: mundane },
         9: { id: "medical-astrology", titleEn: "Medical Astrology & Astro-Ayurveda", titleHi: "आयुर्वेद-ज्योतिष व त्रिदोष", data: medicalAstro },
         10: { id: "vastu-predictions", titleEn: "Vastu Shastra & Directional Energy", titleHi: "वास्तु शास्त्र व दिशा ऊर्जा", data: vastu },
-        11: { id: "birth-chart", titleEn: "9 Grahas (Planets) in Vedic Kundli", titleHi: "वैदिक कुंडली में 9 ग्रह", data: vedicChart },
+        11: { id: "birth-chart", titleEn: "Kundli/BirthChart (12 Bhavas & 9 Grahas)", titleHi: "जन्म कुंडली / जन्मांग (12 भाव व 9 ग्रह)", data: vedicChart },
         13: { id: "name-decoder", titleEn: "Name Decoder & Success Optimizer", titleHi: "नाम विश्लेषण एवं सफलता सुधार", data: nameDecoder }
       }
     });

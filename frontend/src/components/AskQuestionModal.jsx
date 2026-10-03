@@ -11,19 +11,6 @@ export default function AskQuestionModal({ isOpen, setIsOpen, userProfile, chart
   const [isSpeaking, setIsSpeaking] = useState(false);
   const recognitionRef = useRef(null);
 
-  // Quick Query Chips
-  const quickChips = [
-    { label: "📚 Study Field",             text: "What is my current study field?" },
-    { label: "💼 Career & Growth",       text: "Mera career aur promotion kab grow hoga?" },
-    { label: "💍 Marriage & Love",        text: "Meri shadi aur relationship ke yoga kab hain?" },
-    { label: "💰 Wealth Inflow",          text: "Dhan labh aur financial growth kab aayegi?" },
-    { label: "🏡 Vastu + Feng Shui",      text: "Mere ghar me Vastu aur Feng Shui remedies kya hain?" },
-    { label: "💎 Lucky Gemstone",         text: "Mera lucky ratna (gemstone) kaunsa hai?" },
-    { label: "🩺 Health Advice",          text: "Health me problem aa rahi hai, astro remedies batayein?" },
-    { label: "☯️ Feng Shui Tips",         text: "Mera Feng Shui Kua number kya hai aur remedies kya hain?" },
-    { label: "📱 Mobile Vibration",       text: "Kya mera mobile number business ke liye lucky hai?" }
-  ];
-
   // Initialize Speech Recognition
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -117,10 +104,22 @@ export default function AskQuestionModal({ isOpen, setIsOpen, userProfile, chart
               {/* Quick Query Chips */}
               <div style={{ marginBottom: '16px' }}>
                 <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>
-                  QUICK QUESTIONS:
+                  {lang === 'hi' ? 'त्वरित प्रश्न (क्लिक करें):' : 'QUICK QUESTIONS (Click to ask):'}
                 </span>
                 <div className="chip-row">
-                  {quickChips.map((chip, idx) => (
+                  {[
+                    { label: "📚 Study Field",         text: lang === 'hi' ? "मेरा अध्ययन क्षेत्र कौन सा है?" : "What is my ideal study field?" },
+                    { label: "💼 Career & Growth",     text: lang === 'hi' ? "मेरा करियर और प्रमोशन कब होगा?" : "Mera career aur promotion kab grow hoga?" },
+                    { label: "💍 Marriage & Love",     text: lang === 'hi' ? "मेरी शादी के योग कब हैं?" : "Meri shadi aur relationship ke yoga kab hain?" },
+                    { label: "💰 Wealth Inflow",       text: lang === 'hi' ? "मेरे जीवन में धन-लाभ कब होगा?" : "Dhan labh aur financial growth kab aayegi?" },
+                    { label: "🏡 Vastu + Feng Shui",   text: lang === 'hi' ? "मेरे घर में वास्तु और फेंग शुई के उपाय क्या हैं?" : "Mere ghar me Vastu aur Feng Shui remedies kya hain?" },
+                    { label: "💎 Lucky Gemstone",      text: lang === 'hi' ? "मेरा शुभ रत्न कौन सा है?" : "Mera lucky ratna (gemstone) kaunsa hai?" },
+                    { label: "🩺 Health Advice",       text: lang === 'hi' ? "स्वास्थ्य समस्या के लिए ज्योतिष उपाय बताएं?" : "Health me problem aa rahi hai, astro remedies batayein?" },
+                    { label: "☯️ Feng Shui Tips",      text: lang === 'hi' ? "मेरा फेंग शुई कुआ नंबर और उपाय क्या हैं?" : "Mera Feng Shui Kua number kya hai aur remedies kya hain?" },
+                    { label: "📱 Mobile Vibration",    text: lang === 'hi' ? "क्या मेरा मोबाइल नंबर व्यवसाय के लिए शुभ है?" : "Kya mera mobile number business ke liye lucky hai?" },
+                    { label: "✈️ Foreign Travel",      text: lang === 'hi' ? "मेरे विदेश यात्रा के योग कब हैं?" : "Mere chart mein foreign travel ke yoga kab hain?" },
+                    { label: "🎯 General Destiny",     text: lang === 'hi' ? "मेरे जीवन का सामान्य भविष्य क्या है?" : "What does my overall chart say about my destiny?" }
+                  ].map((chip, idx) => (
                     <button
                       key={idx}
                       onClick={() => { setQuery(chip.text); handleAsk(chip.text); }}
@@ -135,27 +134,29 @@ export default function AskQuestionModal({ isOpen, setIsOpen, userProfile, chart
               {/* Input Form */}
               <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
                 <div style={{ position: 'relative', flex: 1, minWidth: 0 }}>
-                  <input
-                    type="text"
+                  <textarea
                     className="form-input"
-                    placeholder="e.g. Mera career kab grow hoga? / My lucky gemstone? / What is my Kua number?"
+                    rows={2}
+                    placeholder={lang === 'hi'
+                      ? "यहाँ अपना प्रश्न लिखें — हिन्दी, हिंग्लिश या अंग्रेजी में। जैसे: मेरी शादी कब होगी? मेरा lucky रत्न क्या है? Mera career kab grow hoga?"
+                      : "Ask anything — Hindi, Hinglish or English. e.g. Mera career kab grow hoga? What is my Kua number? My lucky gemstone? When will I get married?"}
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    onKeyDown={(e) => { if (e.key === 'Enter') handleAsk(); }}
-                    style={{ paddingRight: '45px' }}
+                    onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleAsk(); } }}
+                    style={{ paddingRight: '45px', resize: 'none', fontFamily: 'inherit', lineHeight: 1.5 }}
                   />
                   <button
                     type="button"
                     onClick={toggleVoice}
-                    style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', background: isListening ? '#EF4444' : '#EDE9FE', color: isListening ? '#FFFFFF' : '#6D28D9', border: 'none', borderRadius: '50%', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.2s' }}
+                    style={{ position: 'absolute', right: '8px', top: '10px', background: isListening ? '#EF4444' : '#EDE9FE', color: isListening ? '#FFFFFF' : '#6D28D9', border: 'none', borderRadius: '50%', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.2s' }}
                     title={isListening ? "Listening... Click to stop" : "Speak in any language"}
                   >
                     {isListening ? <MicOff size={16} /> : <Mic size={16} />}
                   </button>
                 </div>
-                <button type="button" className="btn-primary" onClick={() => handleAsk()} disabled={loading || !query.trim()} style={{ padding: '0 18px', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                <button type="button" className="btn-primary" onClick={() => handleAsk()} disabled={loading || !query.trim()} style={{ padding: '0 18px', whiteSpace: 'nowrap', flexShrink: 0, alignSelf: 'flex-end', height: '42px' }}>
                   {loading ? <Sparkles size={16} className="animate-spin" /> : <Send size={16} />}
-                  <span>Ask</span>
+                  <span>{lang === 'hi' ? 'पूछें' : 'Ask'}</span>
                 </button>
               </div>
 
